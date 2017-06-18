@@ -1,0 +1,100 @@
+<?php
+date_default_timezone_set('Europe/Rome');
+if(!empty($_GET['blogaction']))
+  {
+    $tmp_action = $_GET['blogaction'];
+    $filename = "./posts/".$tmp_action.".htm";
+    $postTitle = str_replace('_', ' ', $tmp_action);
+    echo "<div class=\"well\">";
+    echo "<h2>".$postTitle."</h2>";
+    echo "<h4><small>".date("F d Y H:i:s.", filectime($filename)) ."</small></h4>";
+    include($filename);
+    echo "</div>"; //well
+  }
+else
+  {
+    //     <!-- $files = glob('posts/*.htm', GLOB_BRACE); -->
+    
+    $files = array();
+    $dir = new DirectoryIterator("./posts/");
+    foreach ($dir as $fileinfo) 
+      { 
+	if (!$fileinfo->isDot() && 
+	    strpos($fileinfo->GetFilename(),'~') === false &&
+	    strpos($fileinfo->GetFilename(),'#') === false &&
+	    !(strpos($fileinfo->getFilename(),".htm" ) === false))
+	  {
+	    $files[$fileinfo->getMTime()][] = $fileinfo->getFilename();
+	  }
+      }
+    
+    ksort($files);
+    $files= array_reverse ($files);
+    $files = call_user_func_array('array_merge', $files);
+    
+    $postsPerPage = 5;
+    $iStartingPost = 0;
+    $iPostLimit = $postsPerPage;
+    if(!empty($_GET['firstpost']))
+      {
+	$iStartingPost = $_GET['firstpost'];
+	$iPostLimit = $iStartingPost + $postsPerPage;
+      }
+    if ( $iPostLimit > sizeof($files) )
+      {
+	$iPostLimit = sizeof($files);
+      }
+    
+    for ($iPost=$iStartingPost; $iPost<$iPostLimit; $iPost++)
+      {
+	$thisfile = $files[$iPost];
+	$filename = "./posts/".$thisfile;
+	$withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', basename($filename));
+	$postTitle = str_replace('_', ' ', $withoutExt);
+	echo "<div class=\"well\">";
+	echo "<h2>";
+	echo "<a href=?action=Blog&blogaction=".$withoutExt.">";
+	echo $postTitle;
+	echo "</a></h2>";
+	echo "<h4><small>".date("F d Y H:i:s.", filectime($filename)) ."</small></h4>";
+	echo "<p>";
+	$thisfile = fopen($filename,"r");
+	for ($iPostLine=0; $iPostLine<300; $iPostLine++) 
+	  {
+	    if(feof($thisfile))
+	      {
+		break;
+	      }
+	    echo fgetc($thisfile);
+	  }
+	echo "<br /><a href=?action=Blog&blogaction=".$withoutExt.">";
+	echo "Read more</a>";			  
+	echo "</p>";
+	echo "</div>\n"; //well
+      }
+  
+    echo"<div>\n";
+    if( $iStartingPost > 0 )
+      {
+	$tmp = $iStartingPost - $postsPerPage;
+	echo "<a href=\"?action=Blog&firstpost=";
+	echo $tmp;
+	echo "\">";
+	//echo "prev";
+	echo "<button type=\"button\" class=\"btn btn-lg btn-default\">Previous posts</button>";
+	echo "</a>\n";
+      }
+    if( sizeof($files)>$postsPerPage )
+      {
+	$tmp = $iStartingPost + $postsPerPage;
+	echo "<a href=\"?action=Blog&firstpost=";
+	echo $tmp;
+	echo"\">";
+	echo "<button type=\"button\" class=\"btn btn-lg btn-default\">Next posts</button>";
+	//	echo "next";
+	echo "</a>\n";
+      }
+    echo "<hr />";
+    echo "</div>";
+  }
+?>
