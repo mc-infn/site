@@ -17,6 +17,7 @@ else
     
     $files = array();
     $dir = new DirectoryIterator("./posts/");
+//    $dir = new RecursiveDirectoryIterator("./posts/");
     foreach ($dir as $fileinfo) 
       { 
 	if (!$fileinfo->isDot() && 

@@ -1,0 +1,2 @@
+RewriteEngine On
+# Simple passthru for existing files (so we can still get to files that exist!) RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L] # Rewrite anything to index.php?action=anything (http://site/test -> http://site/index.php?action=test) RewriteRule ^(.*)$ index.php?page=$1
