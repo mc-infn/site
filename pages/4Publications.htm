@@ -1,0 +1,20 @@
+ <?php                                              
+     require_once("./template/bibtex2html.php");         
+     echo bibfile2html("./manuale.bib",NULL,NULL,NULL,false,NULL,NULL,NULL,2);
+ ?>                                                 
+
+
+<?php
+/*bibtex2html interprets several non-standard BibTeX fields:
+
+*) url: The content of this field is assumed to be the url of the venue. It is used on the "in" part of the citation. If there is no "in" part, a "more..." link is displayed at the end.
+
+*) webpdf: This is assumed to be a link to the pdf file of the given publication (the title becomes clickable and a "pdf..." link is displayed).
+
+*) publisherurl: The url of the publisher, used on the "publisher" part of the citation. If there is none, a "publisher..." link is displayed at the end.
+
+*) citeseerurl: The citeseer url (displayed as "citeseer...").
+doi: This is supposed to be DOI name from dx.doi.org (displayed as "doi...").
+
+*/
+?>
