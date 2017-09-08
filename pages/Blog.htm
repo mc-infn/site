@@ -58,6 +58,8 @@ else
 	echo $postTitle;
 	echo "</a></h2>";
 	echo "<h4><small>".date("F d Y H:i:s.", filectime($filename)) ."</small></h4>";
+	echo "<hr />";
+
 	echo "<p>";
 	$thisfile = fopen($filename,"r");
 	for ($iPostLine=0; $iPostLine<300; $iPostLine++) 
