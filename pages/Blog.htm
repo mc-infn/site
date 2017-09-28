@@ -61,18 +61,23 @@ else
 	echo "<hr />";
 
 	echo "<p>";
+	$thereIsMore = TRUE;    
 	$thisfile = fopen($filename,"r");
-	for ($iPostLine=0; $iPostLine<300; $iPostLine++) 
+	for ($iPostLine=0; $iPostLine<600; $iPostLine++) 
 	  {
 	    if(feof($thisfile))
 	      {
 		break;
+		$thereIsMore = FALSE;
 	      }
 	    echo fgetc($thisfile);
 	  }
-	echo "<br /><a href=?action=Blog&blogaction=".$withoutExt.">";
-	echo "Read more</a>";			  
-	echo "</p>";
+	if($thereIsMore)
+          {				   
+             echo "...<br /><a href=?action=Blog&blogaction=".$withoutExt.">";
+	     echo "Read more</a>";			  
+	     echo "</p>";
+          }
 	echo "</div>\n"; //well
       }
   
