@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Rome');
 if(!empty($_GET['blogaction']))
   {
     $tmp_action = $_GET['blogaction'];
@@ -57,7 +56,7 @@ else
 	echo "<a href=?action=Blog&blogaction=".$withoutExt.">";
 	echo $postTitle;
 	echo "</a></h2>";
-	echo "<h4><small>".date("F d Y H:i:s.", filectime($filename)) ."</small></h4>";
+	echo "<h4><small>".date("d F Y", filectime($filename)) ."</small></h4>";
 	echo "<hr />";
 
 	echo "<p>";
