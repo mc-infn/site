@@ -144,7 +144,7 @@ if(!in_array($withoutUnder, $noSidebar))
     $time = date('H:i:s', time());
     echo "<li class=\"list-group-item\"> $time </li>";
     $timezone = date_default_timezone_get();
-    echo "<li class=\"list-group-item\"> Timezone is: $timezone </li>";
+    echo "<li class=\"list-group-item\"> Timezone: $timezone </li>";
     echo "</ul>";
     echo "</div>\n";
 
