@@ -350,8 +350,13 @@ function formatAuthors($author, $hightlightName, $authorLimit = 0){
 	$sepName = ", "; // the separator between the second name and the abbreviated first name
 	$authArr = explode(" and ", str_replace(array("\n","\r","\t")," ", $author));
 	$i = 0;
-	
+
 	while(is_array($authArr) && $i < count($authArr)) {
+	  if($authArr[$i] == "others")
+	    {
+	      break;
+	    }
+	  
 		$authArr[$i] = trim($authArr[$i]);
 		$firstNames = '';
 		$secondNames = '';
@@ -399,7 +404,8 @@ function formatAuthors($author, $hightlightName, $authorLimit = 0){
 		if($addEtAl) $authors = substr($authors, 2).' et al.';
 		else $authors = substr($authors, 2).' and '.$authArr[$i];
 	}
-	
+	$authors = str_replace("and others","et al.",$authors);
+	$authors = $authors.";";
 	return $authors.$suffix;
 }
 

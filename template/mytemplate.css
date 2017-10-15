@@ -10,6 +10,12 @@ body {
   margin-bottom: 80px;
   color: #0E2D49;
 }
+
+.highlight {
+    mark;
+    text-decoration: underline;
+}
+    
 a {
   color: #5997B2;
 }
