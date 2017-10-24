@@ -394,15 +394,18 @@ function formatAuthors($author, $hightlightName, $authorLimit = 0){
 	$authors = '';
 	if(count($authArr) == 1) $authors = $authArr[0];
 	else {
-		$limit = $authorLimit == 0 ? count($authArr) : min(count($authArr), $authorLimit);
-		$addEtAl = $authorLimit != 0 && count($authArr) > $authorLimit;
-		
-		$authors = '';
-		for($i = 0; $i < $limit - ($addEtAl ? 0 : 1); $i++) {
-			$authors .= '; '.$authArr[$i];
-		}
-		if($addEtAl) $authors = substr($authors, 2).' et al.';
-		else $authors = substr($authors, 2).' and '.$authArr[$i];
+	  if(count($authArr) > $authorLimit)
+	    {
+	      $authors = $authArr[0].' et al.';
+	    }
+	  else	  
+	    {
+	      $authors = $authArr[0];
+	      for($i = 1; $i < count($authArr); $i++) {
+		$authors .= ' and '.$authArr[$i];
+	      }
+	    }
+
 	}
 	$authors = str_replace("and others","et al.",$authors);
 	$authors = $authors.";";

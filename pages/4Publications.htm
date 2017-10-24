@@ -1,8 +1,16 @@
  <?php                                              
      require_once("./template/bibtex2html.php");         
-     echo bibfile2html("./manuale.bib",NULL,false,true,false,"Mancini Terracciano",NULL,NULL,2);
- ?>                                                 
-
+     echo bibfile2html("./manuale.bib",  /*     bibfile2html($filename,      // string                                  */
+    NULL,				 /*                  $displayTypes,  // array(string => string)                 */
+    false,				 /*                  $groupType,     // bool                                    */
+    true,				 /*                  $groupYear,     // bool                                    */
+    NULL,				 /*                  $bibLink,       // string                                  */
+    "Mancini Terracciano",		 /*                  $highlightName, // string                                  */
+    false,				 /*                  $numbersDesc,   // bool                                    */
+    NULL,				 /*                  $sorting,       // string or array(string)                 */
+    3);					 /*                  $authorLimit,   // int                                     */
+                                         /*                  $abstractLink,  // string                                  */            
+?>				
 
 <?php
 /*bibtex2html interprets several non-standard BibTeX fields:
