@@ -1,3 +1,4 @@
+<?php $config = parse_ini_file('config.ini'); ?>
 <div class="row">
   <div class="col-sm-5" >
     <img class="img-responsive max-width: 80%; height: auto;" src="logo_INFN.png">
@@ -10,7 +11,14 @@
   <div class="col-sm-7" >
     <!-- <img class="img-rounded float-right" src="me.jpg" width="416"> -->
     <!-- <img class="img-responsive max-width: 100%; height: auto;" src="me.jpg"> -->
-    <img class="img-thumbnail" src="me.jpg">
+<?php 
+    if (isset($config['home_img']))
+      {
+	echo "<img class=\"img-thumbnail\" src=\"";
+	echo $config['home_img'];
+	echo"\"> \n";
+      }
+?>
   </div>
 </div>
 
