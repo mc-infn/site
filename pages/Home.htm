@@ -2,9 +2,12 @@
 <div class="row">
   <div class="col-sm-5" >
     <img class="img-responsive max-width: 80%; height: auto;" src="logo_INFN.png">
-    <p>Researcher at INFN, Roma section</p>
-    <p>P.I. of the research project <a href="?action=1GeNIALE">GeNIALE</a></p>
-    <p>Member of the <a href="http://www.geant4.org/geant4/collaboration/members.shtml" target="blank">Geant4 collaboration</a></p>
+<?php
+  if (isset($config['short_description']))
+      {
+	echo $config['short_description'];
+      }
+?>
   </div>
 
 
@@ -12,6 +15,7 @@
     <!-- <img class="img-rounded float-right" src="me.jpg" width="416"> -->
     <!-- <img class="img-responsive max-width: 100%; height: auto;" src="me.jpg"> -->
 <?php 
+
     if (isset($config['home_img']))
       {
 	echo "<img class=\"img-thumbnail\" src=\"";
