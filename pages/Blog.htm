@@ -99,27 +99,54 @@ else
       }
   
     echo"<div>\n";
-    if( $iStartingPost > 0 )
-      {
-	$tmp = $iStartingPost - $postsPerPage;
-	echo "<a href=\"?action=Blog&firstpost=";
-	echo $tmp;
-	echo "\">";
-	//echo "prev";
-	echo "<button type=\"button\" class=\"btn btn-lg btn-default\">Newer posts</button>";
-	echo "</a>\n";
-      }
+    
+    echo "<nav aria-label=\"...\"> \n";
+    echo "  <ul class=\"pager\"> \n";
+
     if( sizeof($files)>$postsPerPage )
       {
+	echo "<li class=\"previous\">";
 	$tmp = $iStartingPost + $postsPerPage;
 	echo "<a href=\"?action=Blog&firstpost=";
 	echo $tmp;
 	echo"\">";
-	echo "<button type=\"button\" class=\"btn btn-lg btn-default\">Older posts</button>";
-	//	echo "next";
-	echo "</a>\n";
       }
+    else
+      {
+	echo "<li class=\"previous disabled\">";
+	echo "<a href=\"#\"> \n";
+      }
+    echo "<span aria-hidden=\"true\">&larr;</span> \n";
+    echo "Older posts \n";
+    echo "</a></li> \n";
+
+    
+    if( $iStartingPost > 0 )
+      {
+	echo "<li class=\"next\">";
+	$tmp = $iStartingPost - $postsPerPage;
+	echo "<a href=\"?action=Blog&firstpost=";
+	echo $tmp;
+	echo "\">";
+      }
+    else
+      {
+	echo "<li class=\"next disabled\">";
+	echo "<a href=\"#\"> \n";
+      }
+    echo "Newer posts \n";
+    echo "<span aria-hidden=\"true\">&rarr;</span> \n";
+    echo "</a></li> \n";
+    
+
+    echo "</ul> \n";
+    echo "</nav> \n";
     echo "<hr />";
     echo "</div>";
+    
+
+
+/*    <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li> */
+
   }
 ?>
