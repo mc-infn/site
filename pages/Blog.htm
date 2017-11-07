@@ -1,14 +1,69 @@
 <?php
+function bbc2html($content, $nl2br = true)
+{
+    $pattern = array(
+        "/\[b\](.*)\[\/b\]/is",
+        "/\[u\](.*)\[\/u\]/is",
+        "/\[i\](.*)\[\/i\]/is",
+        "/\[quote\](.*)\[\/quote\]/is",
+        "/\[color=([^\[\<]+?)\](.*)\[\/color\]/is",
+        "/\[font=([^\[\<]+?)\](.*)\[\/font\]/is",
+        "/\[size=(\d+?)\](.*)\[\/size\]/is",
+        "/\[url\](.*)\[\/url\]/i",
+        "/\[url=(.*)\](.*)\[\/url\]/i",
+        "/\[flash=(\d+),(\d+)\]\s*([^\[\<\r\n]+?)\s*\[\/flash\]/i",
+        "/\[swf\]\s*([^\[\<\r\n]+?)\s*\[\/swf\]/i",
+        "/\[img\]\s*([^\[\<\r\n]+?)\s*\[\/img\]/i",
+    );
+    
+    $replacement = array(
+        "<b>\\1</b>",
+        "<u>\\1</u>",
+        "<i>\\1</i>",
+        "<blockquote>\\1</blockquote>",
+        "<font color=\"\\1\">\\2</font>",
+        "<font face=\"\\1\">\\2</font>",
+        "<font size=\"\\1\">\\2</font>",
+        "<a href=\"\\1\" target=\"_blank\">\\1</a>",
+        "<a href=\"\\1\" target=\"_blank\">\\2</a>",
+        "<p><embed width=\"\\1\" height=\"\\2\" src=\"\\3\"></embed></p>",
+        "<p><embed width=\"500\" height=\"400\" src=\"\\1\"></embed></p>",
+        "<a href=\"\\1\" target=\"_blank\"><img src=\"\\1\" alt=\"\\1\" border=\"0\" /></a>",
+    );
+    
+    $content = preg_replace($pattern, $replacement, $content);
+    
+    $content = $nl2br === true ? nl2br($content) : $content;
+    
+    return $content;
+}
+
 $config = parse_ini_file('config.ini');
+
 if(!empty($_GET['blogaction']))
   {
     $tmp_action = $_GET['blogaction'];
-    $filename = "./posts/".$tmp_action.".htm";
-    $postTitle = str_replace('_', ' ', $tmp_action);
+    $filename = "./posts/".$tmp_action;
+    $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', basename($filename));
+    $file_parts = pathinfo($filename);
+    $postTitle = str_replace('_', ' ', $withoutExt);
     echo "<div class=\"well\">";
     echo "<h2>".$postTitle."</h2>";
     echo "<h4><small>".date("F d Y H:i:s.", filectime($filename)) ."</small></h4>";
-    include($filename);
+    switch($file_parts['extension'])
+      {
+      case "htm":
+	include($filename);
+	break;
+      case "php":
+	include($filename);
+	break;
+      case "txt":
+	$file_content = file_get_contents($filename);
+	$htmltext = bbc2html($file_content);
+	echo nl2br($htmltext);
+	break;
+      }
     echo "</div>"; //well
   }
 else
@@ -23,16 +78,19 @@ else
 	if (!$fileinfo->isDot() && 
 	    strpos($fileinfo->GetFilename(),'~') === false &&
 	    strpos($fileinfo->GetFilename(),'#') === false &&
-	    !(strpos($fileinfo->getFilename(),".htm" ) === false))
+	    !( strpos($fileinfo->getFilename(),".htm" ) === false &&
+	       /* strpos($fileinfo->getFilename(),".php" ) === false && */
+	       strpos($fileinfo->getFilename(),".txt" ) === false ))
 	  {
 	    $files[$fileinfo->getMTime()][] = $fileinfo->getFilename();
 	  }
       }
-    
-    ksort($files);
-    $files= array_reverse ($files);
-    $files = call_user_func_array('array_merge', $files);
-    
+    if(sizeof($files)>0)
+      {
+	ksort($files);
+	$files= array_reverse ($files);
+	$files = call_user_func_array('array_merge', $files);
+      }
     $postsPerPage = $config['postsPerPage'];
     $iStartingPost = 0;
     $iPostLimit = $postsPerPage;
@@ -51,10 +109,11 @@ else
 	$thisfile = $files[$iPost];
 	$filename = "./posts/".$thisfile;
 	$withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', basename($filename));
+	$file_parts = pathinfo($filename);
 	$postTitle = str_replace('_', ' ', $withoutExt);
 	echo "<div class=\"well\">";
 	echo "<h2>";
-	echo "<a href=?action=Blog&blogaction=".$withoutExt.">";
+	echo "<a href=?action=Blog&blogaction=".$thisfile.">";
 	echo $postTitle;
 	echo "</a></h2>";
 	echo "<h4><small>".date("d F Y", filectime($filename)) ."</small></h4>";
@@ -73,7 +132,15 @@ else
 	/*       } */
 	/*     echo fgetc($thisfile); */
 	/*   } */
-	$contents = file_get_contents($filename);
+	$file_content = file_get_contents($filename);
+	if($file_parts['extension']=="txt")
+	  {
+	    $contents = bbc2html($file_content);
+	  }
+	else
+	  {
+	    $contents = $file_content;
+	  }
 	/* $lines = explode("\n", $contents); */
 	$words = preg_split('/[\s]+/', $contents, -1, PREG_SPLIT_NO_EMPTY);
 	foreach($words as $wordNumber=>$word) 
@@ -104,16 +171,16 @@ else
     echo "<nav aria-label=\"...\"> \n";
     echo "  <ul class=\"pager\"> \n";
     if ($config['debug'])
-	       {
-		 echo "first post: ";
-    echo $iStartingPost;
-    echo " number of files: ";
-    echo sizeof($files);
-    echo "<br /> post per page: ";
-    echo $postsPerPage;
-    echo " differece: ";
-    echo  ($postsPerPage-$iStartingPost);
-	       }
+      {
+	echo "first post: ";
+	echo $iStartingPost;
+	echo " number of files: ";
+	echo sizeof($files);
+	echo "<br /> post per page: ";
+	echo $postsPerPage;
+	echo " differece: ";
+	echo  ($postsPerPage-$iStartingPost);
+      }
     if( sizeof($files)>$postsPerPage && ($postsPerPage-$iStartingPost)>0 )
       {
 	echo "<li class=\"previous\">";
