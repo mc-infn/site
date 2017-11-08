@@ -2,6 +2,10 @@
  
 $config = parse_ini_file('config.ini');
 include_once("./template/bb_parse.php");
+include_once("./template/code_parse.php");
+include_once("./template/close_tags.php");
+
+/* $tidy = new Tidy(); */
 
 if(!empty($_GET['blogaction']))
   {
@@ -23,6 +27,7 @@ if(!empty($_GET['blogaction']))
 	break;
       case "txt":
 	$file_content = file_get_contents($filename);
+	$file_content = code_parse($file_content);
 	$htmltext = bb_parse($file_content);
 	$words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
 	foreach($words as $wordNumber=>$word) 
@@ -99,17 +104,21 @@ else
 	/*       } */
 	/*     echo fgetc($thisfile); */
 	/*   } */
-	$file_content = file_get_contents($filename);
+	$contents = file_get_contents($filename);
 	if($file_parts['extension']=="txt")
 	  {
-	    $contents = bb_parse($file_content);
+	    $contents = code_parse($contents);
+	    $contents = bb_parse($contents);
 	  }
-	else
-	  {
-	    $contents = $file_content;
-	  }
+
+	/* $contents = $tidy->repairString($contents, array( */
+	/* 					 'output-xml' => true, */
+	/* 					 'input-xml' => true */
+	/* 					 )); */
 	/* $lines = explode("\n", $contents); */
-	$words = preg_split('/[\s]+/', $contents, -1, PREG_SPLIT_NO_EMPTY);
+	$contents_cleaned = close_tags($contents);
+	/* $contents_cleaned = $contents; */
+	$words = preg_split('/[\s]+/', $contents_cleaned, -1, PREG_SPLIT_NO_EMPTY);
 	foreach($words as $wordNumber=>$word) 
 	{
 	 echo $word;

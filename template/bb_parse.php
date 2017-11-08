@@ -1,4 +1,5 @@
 <?php 
+
 /* function bb_parse($string) {  */
   /* $tags = 'b|i|size|color|center|quote|code|url|img';  */
   /* while (preg_match_all('`\[('.$tags.')=?(.*?)\](.+?)\[/\1\]`', $string, $matches)) foreach ($matches[0] as $key => $match) {  */
