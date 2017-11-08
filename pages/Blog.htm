@@ -1,44 +1,7 @@
 <?php
-function bbc2html($content, $nl2br = true)
-{
-    $pattern = array(
-        "/\[b\](.*)\[\/b\]/is",
-        "/\[u\](.*)\[\/u\]/is",
-        "/\[i\](.*)\[\/i\]/is",
-        "/\[quote\](.*)\[\/quote\]/is",
-        "/\[color=([^\[\<]+?)\](.*)\[\/color\]/is",
-        "/\[font=([^\[\<]+?)\](.*)\[\/font\]/is",
-        "/\[size=(\d+?)\](.*)\[\/size\]/is",
-        "/\[url\](.*)\[\/url\]/i",
-        "/\[url=(.*)\](.*)\[\/url\]/i",
-        "/\[flash=(\d+),(\d+)\]\s*([^\[\<\r\n]+?)\s*\[\/flash\]/i",
-        "/\[swf\]\s*([^\[\<\r\n]+?)\s*\[\/swf\]/i",
-        "/\[img\]\s*([^\[\<\r\n]+?)\s*\[\/img\]/i",
-    );
-    
-    $replacement = array(
-        "<b>\\1</b>",
-        "<u>\\1</u>",
-        "<i>\\1</i>",
-        "<blockquote>\\1</blockquote>",
-        "<font color=\"\\1\">\\2</font>",
-        "<font face=\"\\1\">\\2</font>",
-        "<font size=\"\\1\">\\2</font>",
-        "<a href=\"\\1\" target=\"_blank\">\\1</a>",
-        "<a href=\"\\1\" target=\"_blank\">\\2</a>",
-        "<p><embed width=\"\\1\" height=\"\\2\" src=\"\\3\"></embed></p>",
-        "<p><embed width=\"500\" height=\"400\" src=\"\\1\"></embed></p>",
-        "<a href=\"\\1\" target=\"_blank\"><img src=\"\\1\" alt=\"\\1\" border=\"0\" /></a>",
-    );
-    
-    $content = preg_replace($pattern, $replacement, $content);
-    
-    $content = $nl2br === true ? nl2br($content) : $content;
-    
-    return $content;
-}
-
+ 
 $config = parse_ini_file('config.ini');
+include_once("./template/bb_parse.php");
 
 if(!empty($_GET['blogaction']))
   {
@@ -60,8 +23,12 @@ if(!empty($_GET['blogaction']))
 	break;
       case "txt":
 	$file_content = file_get_contents($filename);
-	$htmltext = bbc2html($file_content);
-	echo nl2br($htmltext);
+	$htmltext = bb_parse($file_content);
+	$words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
+	foreach($words as $wordNumber=>$word) 
+	  {
+	    echo $word." ";
+	  }
 	break;
       }
     echo "</div>"; //well
@@ -135,7 +102,7 @@ else
 	$file_content = file_get_contents($filename);
 	if($file_parts['extension']=="txt")
 	  {
-	    $contents = bbc2html($file_content);
+	    $contents = bb_parse($file_content);
 	  }
 	else
 	  {
