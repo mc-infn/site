@@ -4,6 +4,10 @@ $config = parse_ini_file('config.ini');
 include_once("./template/bb_parse.php");
 include_once("./template/code_parse.php");
 include_once("./template/close_tags.php");
+require_once './htmlpurifier/HTMLPurifier.auto.php';
+$config_htmlpurifier = HTMLPurifier_Config::createDefault();
+$config_htmlpurifier->set('Cache.DefinitionImpl', null);
+$purifier = new HTMLPurifier($config_htmlpurifier);
 
 /* $tidy = new Tidy(); */
 
@@ -91,7 +95,7 @@ else
 	echo "<h4><small>".date("d F Y", filectime($filename)) ."</small></h4>";
 	echo "<hr />";
 
-	echo "<p>";
+	/* echo "<p>"; */
 	$thereIsMore = FALSE;
 	/* $thisfile = fopen($filename,"r"); */
 	/* for ($iPostLine=0; $iPostLine<600; $iPostLine++) */
@@ -116,28 +120,37 @@ else
 	/* 					 'input-xml' => true */
 	/* 					 )); */
 	/* $lines = explode("\n", $contents); */
-	$contents_cleaned = close_tags($contents);
+	/* $contents_cleaned = close_tags($contents); */
 	/* $contents_cleaned = $contents; */
+	$contents_cleaned = $purifier->purify($contents);
+
 	$words = preg_split('/[\s]+/', $contents_cleaned, -1, PREG_SPLIT_NO_EMPTY);
+
+	$final_content = "";
 	foreach($words as $wordNumber=>$word) 
 	{
-	 echo $word;
-	 if($wordNumber>85) 
+	 $final_content.=$word;
+	 if($wordNumber>60) 
 	   {
 	     $thereIsMore = TRUE;
 	     break;
 	   }
 	 else
 	   {
-	     echo " ";
+	     /* echo " "; */
+	     $final_content.=" ";
 	   }
 	}
+	$final_content = $purifier->purify($final_content);
  	if($thereIsMore)
           {				   
-             echo "...<br /><a href=?action=Blog&blogaction=".$withoutExt.">";
-	     echo "Read more</a>";			  
+             /* echo "...<br /><a href=?action=Blog&blogaction=".$withoutExt.">"; */
+	     /* echo "Read more</a>"; */
+	     $final_content.="<br /><a href=?action=Blog&blogaction=".$withoutExt.">";
+	     $final_content.="Read more</a>";		  
 	  }
-	echo "</p>";
+	/* echo "</p>"; */
+	echo $final_content;
           
 	echo "</div>\n"; //well
       }
