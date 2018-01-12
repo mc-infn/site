@@ -1,2 +1,9 @@
+# Options +FollowSymLinks
 RewriteEngine On
-# Simple passthru for existing files (so we can still get to files that exist!) RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L] # Rewrite anything to index.php?action=anything (http://site/test -> http://site/index.php?action=test) RewriteRule ^(.*)$ index.php?page=$1
+# Simple passthru for existing files (so we can still get to files that exist!)
+RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L]
+# Rewrite anything to index.php?action=anything (http://site/test -> http://site/index.php?action=test)
+# RewriteRule ^(.*)$ index.php?page=$1
+RewriteRule ^page/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=$1
+RewriteRule ^post/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=Blog&blogaction=$1 
+# RewriteRule ^(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?page=$1 [R,L]
