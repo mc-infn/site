@@ -1,9 +1,15 @@
 # Options +FollowSymLinks
 RewriteEngine On
 # Simple passthru for existing files (so we can still get to files that exist!)
-RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L]
+#RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L]
 # Rewrite anything to index.php?action=anything (http://site/test -> http://site/index.php?action=test)
 # RewriteRule ^(.*)$ index.php?page=$1
-RewriteRule ^page/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=$1
-RewriteRule ^post/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=Blog&blogaction=$1 
+# RewriteRule ^page/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=$RewriteCond %{HTTP_HOST} example.com$ [NC]1
+#RewriteRule ^post/(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=Blog&blogaction=$1 
 # RewriteRule ^(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?page=$1 [R,L]
+# RewriteCond %{HTTP_HOST} geniale.roma1.infn.it/user/carlo/site/$ [NC]
+# RewriteCond %{HTTP_HOST} !?action=
+# RewriteRule ^(.*)$ http://geniale.roma1.infn.it/user/carlo/site/?action=$1
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://geniale.roma1.infn.it/user/carlo/site/index.php?action=$1 [NC,L,QSA]
