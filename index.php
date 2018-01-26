@@ -6,6 +6,13 @@ function directoryToList($dirname, $disallowed_paths, $action)
     $dir = new DirectoryIterator($dirname);
     
     include("./template/navhead.htm");
+    include_once("./template/bb_parse.php");
+    include_once("./template/code_parse.php");
+    include_once("./template/close_tags.php");
+    /* require_once './htmlpurifier/HTMLPurifier.auto.php'; */
+    /* $config_htmlpurifier = HTMLPurifier_Config::createDefault(); */
+    /* $config_htmlpurifier->set('Cache.DefinitionImpl', null); */
+    /* $purifier = new HTMLPurifier($config_htmlpurifier); */
     foreach ($dir as $fileinfo) 
         {
             if (!$fileinfo->isDot()) 
@@ -111,7 +118,7 @@ if (!empty($_GET['action']))
         /* echo "./pages/".$tmp_action.".htm"; */
         
         // If it's not a disallowed path, and if the file exists, update $action 
-        if (!in_array($tmp_action, $disallowed_paths) && file_exists("./pages/".$tmp_action.".htm"))
+        if (!in_array($tmp_action, $disallowed_paths) && (file_exists("./pages/".$tmp_action.".htm") || file_exists("./pages/".$tmp_action.".txt") ))
             $action = $tmp_action; 
     } 
 
@@ -140,7 +147,22 @@ if(!in_array($withoutUnder, $noSidebar))
         echo "<div class=\"col-sm-8\">\n";
         /* echo "<div class=\"well\">";  */
         // Include $action 
-        include("./pages/".$action.".htm"); 
+	if (file_exists("./pages/".$action.".htm"))
+	  {
+	    include("./pages/".$action.".htm"); 
+	  }
+	else if (file_exists("./pages/".$tmp_action.".txt"))
+	    {
+	      $filename="./pages/".$tmp_action.".txt";
+	      $file_content = file_get_contents($filename);
+	      $file_content = code_parse($file_content);
+	      $htmltext = bb_parse($file_content);
+	      $words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
+	      foreach($words as $wordNumber=>$word)
+	  	{
+	  	  echo $word." ";
+	  	}
+	    }
         /* echo "</div>\n"; */
         echo "</div>\n";
         
@@ -172,8 +194,23 @@ if(!in_array($withoutUnder, $noSidebar))
     }
 else
     {
-        include("./pages/".$action.".htm"); 
-    }
+      if (file_exists("./pages/".$action.".htm"))
+	{
+	  include("./pages/".$action.".htm"); 
+	}
+      else if (file_exists("./pages/".$tmp_action.".txt"))
+	  {
+	    $filename="./pages/".$tmp_action.".txt";
+	    $file_content = file_get_contents($filename);
+	    $file_content = code_parse($file_content);
+	    $htmltext = bb_parse($file_content);
+	    $words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
+	    foreach($words as $wordNumber=>$word)
+	      {
+		echo $word." ";
+	      }
+	  }
+      }
 echo "</div>\n"; //row
 
 echo "</div>\n";
