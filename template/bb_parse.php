@@ -44,7 +44,7 @@ function bb_parse($content, $nl2br = true)
         "/\[url=(.*)\](.*)\[\/url\]/i",
         "/\[flash=(\d+),(\d+)\]\s*([^\[\<\r\n]+?)\s*\[\/flash\]/i",
         "/\[swf\]\s*([^\[\<\r\n]+?)\s*\[\/swf\]/i",
-        "/\[img\]\s*([^\[\<\r\n]+?)\s*\[\/img\]/i",
+        "/\[img=\s*([^\[\<\r\n]+?)\s*\](.*)\[\/img\]/i",
     );
     
     $replacement = array(
@@ -60,7 +60,7 @@ function bb_parse($content, $nl2br = true)
         "<a href=\"\\1\" target=\"_blank\">\\2</a>",
         "<p><embed width=\"\\1\" height=\"\\2\" src=\"\\3\"></embed></p>",
         "<p><embed width=\"500\" height=\"400\" src=\"\\1\"></embed></p>",
-        "<a href=\"\\1\" target=\"_blank\"><img src=\"\\1\" alt=\"\\1\" border=\"0\" /></a>",
+        "<figure class=\"figure\"><a href=\"\\1\" target=\"_blank\"><img class=\"img-responsive max-width: 40%; height: auto;\"  src=\"\\1\" alt=\"\\1\" border=\"0\" /><figcaption class=\"figure-caption\">\\2</figcaption></a></figure>",
     );
     
     $content = preg_replace($pattern, $replacement, $content);
