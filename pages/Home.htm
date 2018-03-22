@@ -30,13 +30,33 @@
   <div class="col-sm-12" >
     <h3>Contacts:</h3>
     <p>
-      <ul class="icon">
-	<li class="envelope"> 
-	  email: <a href="mailto:carlo.mancini.terracciano@roma1.infn.it" rel="nofollow">carlo.mancini.terracciano@roma1.infn.it</a></li>
-	<li class="comment"> 
-	  skype: carlomt</li>
-	<li class="phone-alt"> 
-	  telephone: +39 06 4969 4249</li>
+      <?php
+	 echo "<ul class=\"icon\">";
+	 if (isset($config['email']))
+	 {
+	 echo "<li class=\"envelope\"> ";
+	 echo "email: <a href=\"mailto:";
+         echo $config['email'];			 
+	 echo " rel=\"nofollow\">";
+         echo $config['email'];			 
+         echo"</a></li>";
+         }
+	 if (isset($config['skype']))
+	 {
+	 echo "<li class=\"comment\"> ";
+	 echo "skype: ";
+         echo $config['skype'];			 
+         echo"</li>";
+         }
+	 if (isset($config['telephone']))
+	 {
+	 echo "<li class=\"phone-alt\"> ";
+	 echo "telephone: ";
+         echo $config['telephone'];			 
+         echo"</li>";
+         }
+?>
+
 	<li class="map-marker"> 
 	  address: 
 	  Istituto Nazionale di Fisica Nucleare - Sezione di Roma <br />

@@ -4,11 +4,11 @@
 # #RewriteCond %{REQUEST_FILENAME} -s [OR] RewriteCond %{REQUEST_FILENAME} -l [OR] RewriteCond %{REQUEST_FILENAME} -d RewriteRule ^.*$ - [NC,L]
 
 <IfModule mod_rewrite.c>
-   SetEnv HTTP_MOD_REWRITE On
+   # SetEnv HTTP_MOD_REWRITE On
 
    RewriteEngine on
 
-   RewriteBase /user/carlo/site/
+   RewriteBase /~mancinit/
 
    RewriteRule ^post/(.*)$ 	?action=Blog&blogaction=$1	[NC,L,QSA]
 
