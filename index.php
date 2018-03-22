@@ -217,7 +217,7 @@ echo "</div>\n";
 echo "</div>\n";
 
 include("template/footer.htm");
-
+//ciao
 ?>
 
 
