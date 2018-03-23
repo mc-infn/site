@@ -182,14 +182,8 @@ if(!in_array($withoutUnder, $noSidebar))
         $timezone = date_default_timezone_get();
         echo "<li class=\"list-group-item\"> Timezone: $timezone </li>";
         echo "</ul>";
-        echo "</div>\n";
-        
-        echo "<div class=\"panel panel-default\">\n";
-        echo "<div class=\"panel panel-heading\">\n";
-        echo "Links";
-        echo "</div>\n";
-        include("template/sidebar.htm"); 
-        echo "</div>\n";
+        echo "</div>\n";        
+        include("template/sidebar.php"); 
         echo "</div>\n";
     }
 else
