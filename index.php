@@ -144,7 +144,7 @@ echo "<div class=\"row\">\n";
 $noSidebar = array('Outreach');
 if(!in_array($withoutUnder, $noSidebar))
     {
-        echo "<div class=\"col-sm-8\">\n";
+        echo "<div class=\"col-sm-9\">\n";
         /* echo "<div class=\"well\">";  */
         // Include $action 
 	if (file_exists("./pages/".$action.".htm"))
@@ -166,7 +166,7 @@ if(!in_array($withoutUnder, $noSidebar))
         /* echo "</div>\n"; */
         echo "</div>\n";
         
-        echo "<div class=\"col-sm-4\">\n";
+        echo "<div class=\"col-sm-3\">\n";
         
         echo "<div class=\"panel panel-default\">\n";
         /* echo "<div class=\"panel panel-primary\">"; */
