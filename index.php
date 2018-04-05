@@ -118,8 +118,11 @@ if (!empty($_GET['action']))
         /* echo "./pages/".$tmp_action.".htm"; */
         
         // If it's not a disallowed path, and if the file exists, update $action 
-        if (!in_array($tmp_action, $disallowed_paths) && (file_exists("./pages/".$tmp_action.".htm") || file_exists("./pages/".$tmp_action.".txt") ))
-            $action = $tmp_action; 
+        if (!in_array($tmp_action, $disallowed_paths) 
+	    && (file_exists("./pages/".$tmp_action.".php")
+		|| file_exists("./pages/".$tmp_action.".htm") 
+		|| file_exists("./pages/".$tmp_action.".txt") ))
+	  $action = $tmp_action; 
     } 
 
 
@@ -147,7 +150,11 @@ if(!in_array($withoutUnder, $noSidebar))
         echo "<div class=\"col-sm-9\">\n";
         /* echo "<div class=\"well\">";  */
         // Include $action 
-	if (file_exists("./pages/".$action.".htm"))
+	if (file_exists("./pages/".$action.".php"))
+	  {
+	    include("./pages/".$action.".php"); 
+	  }
+	else if (file_exists("./pages/".$action.".htm"))
 	  {
 	    include("./pages/".$action.".htm"); 
 	  }
