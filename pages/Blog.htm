@@ -4,7 +4,7 @@ $config = parse_ini_file('config.ini');
 include_once("./template/bb_parse.php");
 include_once("./template/code_parse.php");
 include_once("./template/close_tags.php");
-require_once './htmlpurifier/HTMLPurifier.auto.php';
+require_once("./template/htmlpurifier/HTMLPurifier.auto.php");
 $config_htmlpurifier = HTMLPurifier_Config::createDefault();
 $config_htmlpurifier->set('Cache.DefinitionImpl', null);
 $purifier = new HTMLPurifier($config_htmlpurifier);
