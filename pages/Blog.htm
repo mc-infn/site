@@ -139,7 +139,7 @@ else
 	    foreach($words as $wordNumber=>$word) 
 	      {
 		$final_content.=$word;
-		if($wordNumber>60) 
+		if($wordNumber>$config['nWordsBlogPreview']) 
 		  {
 		    $thereIsMore = TRUE;
 		    break;
