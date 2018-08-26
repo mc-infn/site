@@ -111,6 +111,11 @@ include("./template/header.htm");
 $action = 'Home'; 
 // Specify some disallowed paths 
 $disallowed_paths = array('header', 'footer'); 
+if (isset($config['disable_pages']))
+  {
+    $disallowed_paths = array_merge($disallowed_paths,  $config['disable_pages'] );
+  }
+
 if (!empty($_GET['action'])) 
     { 
         //$tmp_action = basename($_GET['action']); 
@@ -144,7 +149,11 @@ echo "</div>\n";
 echo "</div>\n"; //row
 
 echo "<div class=\"row\">\n";
-$noSidebar = array('Outreach');
+$noSidebar = array();
+if (isset($config['no_sidebar_pages']))
+  {
+    $noSidebar = $config['no_sidebar_pages'];
+  }
 if(!in_array($withoutUnder, $noSidebar))
     {
         echo "<div class=\"col-sm-9\">\n";
@@ -174,23 +183,8 @@ if(!in_array($withoutUnder, $noSidebar))
         echo "</div>\n";
         
         echo "<div class=\"col-sm-3\">\n";
-        
-        echo "<div class=\"panel panel-default\">\n";
-        /* echo "<div class=\"panel panel-primary\">"; */
-        echo "<div class=\"panel panel-heading\">\n";
-        echo "Server Time";
-        echo "</div>\n";
-        echo "<ul class=\"list-group\">";
-        /* $date = date('d/m/Y H:i:s', time()); */
-        $date = date('D d F Y', time());
-        echo "<li class=\"list-group-item\"> $date </li>";
-        $time = date('H:i:s', time());
-        echo "<li class=\"list-group-item\"> $time </li>";
-        $timezone = date_default_timezone_get();
-        echo "<li class=\"list-group-item\"> Timezone: $timezone </li>";
-        echo "</ul>";
-        echo "</div>\n";        
-        include("template/sidebar.php"); 
+	include("template/ServerTime.php"); 
+	include("template/sidebar.php"); 
         echo "</div>\n";
     }
 else
