@@ -384,7 +384,8 @@ function formatAuthors($author, $hightlightName, $authorLimit = 0){
 		}
 		$firstNames = implode(' ', $firstNamesArr);
 		
-		$authArr[$i] = trim($secondNames.$sepName.$firstNames);
+		/* $authArr[$i] = trim($secondNames.$sepName.$firstNames); */
+		$authArr[$i] = trim($firstNames." ".$secondNames);
 		
 		if($hightlightName != '' && strtolower($secondNames) == strtolower($hightlightName)) $authArr[$i] = '<span class="highlight">'.$authArr[$i].'</span>';
 		

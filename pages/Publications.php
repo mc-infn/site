@@ -20,6 +20,12 @@ if (isset($config['orcid_id']))
     echo ".</p>";
   }
 
+if (isset($config['mark_if_im_corr']))
+  {
+    echo "<p>The ";
+    echo $config['mark_if_im_corr'];
+    echo " indicates I am the corresponding author.</p>";
+  }
   
 if (isset($config['bibliography']))
   {
@@ -28,7 +34,7 @@ if (isset($config['bibliography']))
 		      false,				 /*                  $groupType,     // bool                                    */
 		      true,				 /*                  $groupYear,     // bool                                    */
 		      NULL,				 /*                  $bibLink,       // string                                  */
-		      "Mancini Terracciano",		 /*                  $highlightName, // string                                  */
+		      "Mancini-Terracciano",		 /*                  $highlightName, // string                                  */
 		      false,				 /*                  $numbersDesc,   // bool                                    */
 		      NULL,				 /*                  $sorting,       // string or array(string)                 */
 		      3);					 /*                  $authorLimit,   // int                                     */
