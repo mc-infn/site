@@ -870,7 +870,7 @@ function bibstring2html($fileContent, $displayTypes = NULL, $groupType = NULL, $
 	} elseif($groupYear) {	
 		krsort($entries);
 		foreach($entries as $year => $yearEntries) {
-			$ret .= '<h2>'.$year.'</h2>';
+			$ret .= '<h3>'.$year.'</h3>';
 			$ret .= '<ol start="'.$j.'">';
 			uksort($yearEntries, 'strcoll');
 			foreach($yearEntries as $index => $info) {
