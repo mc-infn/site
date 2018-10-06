@@ -9,6 +9,7 @@ function directoryToList($dirname, $disallowed_paths, $action)
     include_once("./template/bb_parse.php");
     include_once("./template/code_parse.php");
     include_once("./template/close_tags.php");
+    include_once("./template/include_page.php");
     /* require_once './htmlpurifier/HTMLPurifier.auto.php'; */
     /* $config_htmlpurifier = HTMLPurifier_Config::createDefault(); */
     /* $config_htmlpurifier->set('Cache.DefinitionImpl', null); */
@@ -98,7 +99,15 @@ function directoryToList($dirname, $disallowed_paths, $action)
         }
     /* include("template/dropdown.htm"); */
     
-    echo "</ul>";
+    echo "</ul>\n";
+    
+    /* echo "<div class=\"search-container\">\n"; */
+    /* /\* echo "<form action=\"/action_page.php\">\n"; *\/ */
+    /* echo "<input type=\"text\" placeholder=\"Search..\" name=\"search\">\n"; */
+    /* echo "<button type=\"submit\"><i class=\"fa fa-search\"></i></button>\n"; */
+    /* echo "</form>\n"; */
+    /* echo "</div>\n"; */
+    
     echo "</div>\n";
     echo "</div>\n"; 
     echo "</nav>";
@@ -116,22 +125,34 @@ if (isset($config['disable_pages']))
     $disallowed_paths = array_merge($disallowed_paths,  $config['disable_pages'] );
   }
 
+
+$dirname = "./pages";
+
 if (!empty($_GET['action'])) 
-    { 
-        //$tmp_action = basename($_GET['action']); 
-        $tmp_action = $_GET['action'];
-        /* echo "./pages/".$tmp_action.".htm"; */
-        
-        // If it's not a disallowed path, and if the file exists, update $action 
-        if (!in_array($tmp_action, $disallowed_paths) 
-	    && (file_exists("./pages/".$tmp_action.".php")
-		|| file_exists("./pages/".$tmp_action.".htm") 
-		|| file_exists("./pages/".$tmp_action.".txt") ))
-	  $action = $tmp_action; 
-    } 
+  { 
+    //$tmp_action = basename($_GET['action']); 
+    $tmp_action = $_GET['action'];
+    /* echo "./pages/".$tmp_action.".htm"; */
+    
+    // If it's not a disallowed path, and if the file exists, update $action 
+    if (!in_array($tmp_action, $disallowed_paths) 
+	&& (file_exists("./pages/".$tmp_action.".php")
+	    || file_exists("./pages/".$tmp_action.".htm") 
+	    || file_exists("./pages/".$tmp_action.".txt") ))
+      $action = $tmp_action; 
+  }  
 
 
-$action = directoryToList("./pages",$disallowed_paths, $action);
+if (!empty($_GET['search']))
+  {
+    $action='Search';
+  }
+
+$withoutNum = preg_replace('/^\d/', '', basename($action));
+$withoutUnder = str_replace('_', ' ', $withoutNum);
+$pageTitle = $withoutUnder;
+
+$action = directoryToList($dirname,$disallowed_paths, $action);
 //////////////////////////////////////
 
 echo "<div class=\"container-fluid\">\n";
@@ -141,9 +162,7 @@ echo "<div class=\"row\">\n";
 /* echo "<div class=\"jumbotron\">"; */
 echo "<div class=\"page-header\">\n";
 echo "<h1>";
-$withoutNum = preg_replace('/^\d/', '', basename($action));
-$withoutUnder = str_replace('_', ' ', $withoutNum);
-echo $withoutUnder;
+echo $pageTitle;
 echo "</h1>";
 echo "</div>\n"; 
 echo "</div>\n"; //row
@@ -154,58 +173,26 @@ if (isset($config['no_sidebar_pages']))
   {
     $noSidebar = $config['no_sidebar_pages'];
   }
-if(!in_array($withoutUnder, $noSidebar))
-    {
-        echo "<div class=\"col-sm-9\">\n";
-        /* echo "<div class=\"well\">";  */
-        // Include $action 
-	if (file_exists("./pages/".$action.".php"))
-	  {
-	    include("./pages/".$action.".php"); 
-	  }
-	else if (file_exists("./pages/".$action.".htm"))
-	  {
-	    include("./pages/".$action.".htm"); 
-	  }
-	else if (file_exists("./pages/".$tmp_action.".txt"))
-	    {
-	      $filename="./pages/".$tmp_action.".txt";
-	      $file_content = file_get_contents($filename);
-	      $file_content = code_parse($file_content);
-	      $htmltext = bb_parse($file_content);
-	      $words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
-	      foreach($words as $wordNumber=>$word)
-	  	{
-	  	  echo $word." ";
-	  	}
-	    }
-        /* echo "</div>\n"; */
-        echo "</div>\n";
-        
-        echo "<div class=\"col-sm-3\">\n";
-	include("template/ServerTime.php"); 
-	include("template/sidebar.php"); 
-        echo "</div>\n";
-    }
+if(!in_array($pageTitle, $noSidebar))
+  {
+    echo "<div class=\"col-sm-9\">\n";
+    /* echo "<div class=\"well\">";  */
+    // Include $action 
+    
+    /* echo "</div>\n"; */
+    include_page($action,$dirname);
+    echo "</div>\n";
+
+    echo "<div class=\"col-sm-3\">\n";
+    include("template/SearchForm.htm");
+    include("template/ServerTime.php"); 
+    include("template/sidebar.php"); 
+    echo "</div>\n";
+  }
 else
-    {
-      if (file_exists("./pages/".$action.".htm"))
-	{
-	  include("./pages/".$action.".htm"); 
-	}
-      else if (file_exists("./pages/".$tmp_action.".txt"))
-	  {
-	    $filename="./pages/".$tmp_action.".txt";
-	    $file_content = file_get_contents($filename);
-	    $file_content = code_parse($file_content);
-	    $htmltext = bb_parse($file_content);
-	    $words = preg_split('/[\s]+/', $htmltext, -1, PREG_SPLIT_NO_EMPTY);
-	    foreach($words as $wordNumber=>$word)
-	      {
-		echo $word." ";
-	      }
-	  }
-      }
+  {
+    include_page($action,$dirname);
+  }
 echo "</div>\n"; //row
 
 echo "</div>\n";

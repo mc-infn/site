@@ -325,3 +325,42 @@ ul.icon li.bell:before{content:"\1f514";}
 ul.icon li.bookmark:before{content:"\1f516";}
 ul.icon li.fire:before{content:"\1f525";}
 ul.icon li.wrench:before{content:"\1f527";}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Style the search field */
+form.search input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+/* Style the submit button */
+form.search button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #0E2D49;
+/* #2196F3; */
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+}
+
+form.search button:hover {
+  background: #5997B2;
+}
+
+/* Clear floats */
+form.search::after {
+  content: "";
+  clear: both;
+  display: table;
+}
