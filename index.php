@@ -116,8 +116,8 @@ function directoryToList($dirname, $disallowed_paths, $action)
 }
 
 include("./template/header.htm");
-// Set the default name 
-$action = 'Home'; 
+// Set the default name
+$action = 'Home';
 // Specify some disallowed paths 
 $disallowed_paths = array('header', 'footer'); 
 if (isset($config['disable_pages']))
@@ -184,6 +184,9 @@ if(!in_array($pageTitle, $noSidebar))
     echo "</div>\n";
 
     echo "<div class=\"col-sm-3\">\n";
+    echo "<div><center>";
+echo "<img class=\"img-responsive max-width: 100%; height: auto;\" src=\"logo_INFN.png\">";  
+echo "</center><p></p></div>";			  
     include("template/SearchForm.htm");
     include("template/ServerTime.php"); 
     include("template/sidebar.php"); 

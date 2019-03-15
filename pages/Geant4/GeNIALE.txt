@@ -1,0 +1,11 @@
+[b][i]Geant Nuclear Interaction At Low Energy[/i][/b]
+
+GeNIALE is a research project funded by the National Scientific Committee 5 (CSN5) of INFN. It aims to improve the Geant4 performances in reproducing the nuclear fragmentation below 100MeV/A.
+
+Geant4 is a comprehensive Monte Carlo (MC) toolkit that describes the passage and the interactions of particles through matter. It covers an extensive range of physics processes, including electromagnetic, hadronic, and optical. It is used in a variety of research fields, including particle physics, nuclear physics, accelerator design, space engineering, and medical physics. Beyond physics, Geant4 usage range from radiation analysis for space applications to biological damage induced by ionizing radiation at the DNA scale.
+Despite of its large use, recent literature has shown the limitations of the models implemented in Geant4 in reproducing the measured secondaries yields in ions interaction below 100 MeV/A, in term of production rates, angular and energy distributions; thus GeNIALE covers a gap which needs to be filled.
+The core of the project is implementing a new model for the first part of the interaction of an hadron -or a nucleus- with a target nucleus in Geant4. Indeed, hadronic interactions are usually simulated in two different stages: the first one describes the interaction from the collision until the excited nuclear species produced in the collision are in equilibrium, i.e. the excitation energy is shared among all the nucleons; the second one models the emission of such excited, but equilibrated, nuclei. The new model will be coupled with the models already implemented in Geant4 for the second stage, and with the Geant4 framework in general.
+
+The choice and the adaptation of the model will be done with the foundamental contribution of the LNS Theory Group and the collaboration of the IPN of Orsay. Indeed, they have a long tradition in studying nuclear dynamics, based on the development of suitable transport approaches and microscopic techniques to evaluate the properties of the nuclear interaction in the medium and corresponding effective interactions.
+
+[url=http://www.roma1.infn.it/~mancinit/?action=1GeNIALE]More information[/url]

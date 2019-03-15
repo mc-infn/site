@@ -1,5 +1,12 @@
 <?php 
 $config = parse_ini_file('config.ini');
+
+if (isset($config['carousel']))
+{
+  include("./pages/Carousel.php");
+}
+else
+{
 echo "<div class=\"row\">";
 echo "<div class=\"col-sm-5\" >";
 echo "<img class=\"img-responsive max-width: 80%; height: auto;\" src=\"logo_INFN.png\">";
@@ -65,5 +72,5 @@ echo "</ul>";
 echo "</p>";
 echo "</div>";
 echo "</div>";
-
+}
 ?>

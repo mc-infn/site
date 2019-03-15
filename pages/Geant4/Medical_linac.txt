@@ -6,15 +6,11 @@ A) ISPESL and INFN Roma, gruppo collegato Sanità, Italy
 
 B) Istituto Superiore di Sanità and INFN Roma, gruppo collegato Sanità , Viale Regina Elena 299, 00161 Roma (Italy)
 
-
-
-
+[img=./img/Schermata_20170220_alle_221844.png]caption[/img]
 
 Introduction
 
 The example is based on a typical structure of a medical linear accelerator for Intensity Modulated Radiation Therapy (IMRT), such as Varian Clinac 2100 accelerator. The user may choice a cubic phantom filled with water or a phantom filled with an equivalent lung-tissue with a inhomogeneity (a 6 cm sided PMMA cube) located in the centre of the phantom. Two type of particle sources may be chosen, a random generator of electrons gun shooting the target or particles loaded from a phase space. The program allows the generation of a plane phase space. However since the mother volume of this plane phase space is the accelerator volume it can be positioned only inside the accelerator main volume.
-
-
 
 Experimental set-up
 
